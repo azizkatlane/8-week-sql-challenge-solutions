@@ -1,2 +1,2 @@
 # 8-week-sql-challenge-solutions
-8 Week SQL Challenge – Business Case Study Solutions
+This repository contains my solutions to the 8 Week SQL Challenge by Danny Ma. Each case study simulates real-world business scenarios involving customer analytics, retention, product performance, operational metrics, and decision support.
