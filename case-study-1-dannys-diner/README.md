@@ -1,3 +1,5 @@
+### Bonus Questions
+
 Recreate the following table output using the available data:
 
 
