@@ -23,7 +23,7 @@ Recreate the following table output using the available data:
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
 
-`
+```
 with joined as(
   SELECT
       s.customer_id,
@@ -46,4 +46,4 @@ from joined j
 full join members m
 using(customer_id)
 order by customer_id,order_date
-`
+```
