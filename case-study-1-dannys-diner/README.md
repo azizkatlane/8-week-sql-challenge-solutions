@@ -21,7 +21,7 @@ Recreate the following table output using the available data:
 | C           | 2021-01-01 | ramen        | 12    | N      |
 | C           | 2021-01-07 | ramen        | 12    | N      |
 
----
+
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
 
@@ -49,6 +49,7 @@ full join members m
 using(customer_id)
 order by customer_id,order_date
 ```
+---
 
 Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.
 
