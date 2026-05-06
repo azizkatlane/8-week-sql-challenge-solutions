@@ -49,3 +49,58 @@ full join members m
 using(customer_id)
 order by customer_id,order_date
 ```
+
+Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.
+
+
+| customer_id | order_date | product_name | price | member | rank |
+| ----------- | ---------- | ------------ | ----- | ------ | ---- |
+| A           | 2021-01-01 | sushi        | 10    | N      |      |
+| A           | 2021-01-01 | curry        | 15    | N      |      |
+| A           | 2021-01-07 | curry        | 15    | Y      | 1    |
+| A           | 2021-01-10 | ramen        | 12    | Y      | 2    |
+| A           | 2021-01-11 | ramen        | 12    | Y      | 3    |
+| A           | 2021-01-11 | ramen        | 12    | Y      | 3    |
+| B           | 2021-01-01 | curry        | 15    | N      |      |
+| B           | 2021-01-02 | curry        | 15    | N      |      |
+| B           | 2021-01-04 | sushi        | 10    | N      |      |
+| B           | 2021-01-11 | sushi        | 10    | Y      | 1    |
+| B           | 2021-01-16 | ramen        | 12    | Y      | 2    |
+| B           | 2021-02-01 | ramen        | 12    | Y      | 3    |
+| C           | 2021-01-01 | ramen        | 12    | N      |      |
+| C           | 2021-01-01 | ramen        | 12    | N      |      |
+| C           | 2021-01-07 | ramen        | 12    | N      |      |
+
+```
+with joined as(
+      SELECT
+          s.customer_id,
+          s.order_date,
+          product_name,
+          price
+      from sales s
+      join menu m
+      on s.product_id=m.product_id
+    ),
+    
+    is_member as (
+      select j.*,
+          COALESCE(
+            case
+              when m.join_date is not null and j.order_date<m.join_date then 'N'
+              when m.join_date is not null then 'Y'
+            end,
+            'N') as member
+      from joined j
+      full join members m
+      using(customer_id)
+    )
+    
+    select
+    	*,
+    	case
+        	when is_member.member = 'N' then null
+            else  rank() over(partition by customer_id,is_member.member order by order_date)
+        end as rank
+    from is_member
+```
